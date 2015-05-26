@@ -56,7 +56,6 @@ public class WriterGenerator {
       JInvocation addInvocation = body.invoke(varObjectBuilder, "add");
       addInvocation.arg(field.getName());
       addInvocation.arg(varObjectToSerialize.ref(field.getName()));
-      addInvocation.invoke("toString").arg("null");
     }
     body._return(varObjectBuilder.invoke("build"));
   }

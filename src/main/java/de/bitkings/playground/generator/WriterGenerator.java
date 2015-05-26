@@ -1,14 +1,7 @@
 package de.bitkings.playground.generator;
 
-import com.sun.codemodel.internal.JBlock;
-import com.sun.codemodel.internal.JClass;
-import com.sun.codemodel.internal.JClassAlreadyExistsException;
-import com.sun.codemodel.internal.JCodeModel;
-import com.sun.codemodel.internal.JDefinedClass;
-import com.sun.codemodel.internal.JInvocation;
-import com.sun.codemodel.internal.JMethod;
-import com.sun.codemodel.internal.JVar;
-import com.sun.codemodel.internal.writer.FileCodeWriter;
+import com.sun.codemodel.*;
+import com.sun.codemodel.writer.FileCodeWriter;
 import de.bitkings.playground.model.TeilAntrag;
 
 import javax.json.Json;
@@ -16,17 +9,13 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import java.io.File;
 import java.lang.reflect.Field;
-import java.nio.charset.Charset;
 
-import static com.sun.codemodel.internal.JMod.PUBLIC;
+import static com.sun.codemodel.JMod.PUBLIC;
 
 public class WriterGenerator {
 
-  public static final Charset UTF8 = Charset.forName("UTF-8");
-
   private static final String SRC_PATH = "src/generated/java";
   private static final String CLASS_SUFFIX = "Writer";
-  private static final String FILE_EXT = ".java";
 
   private String className;
 
@@ -34,8 +23,7 @@ public class WriterGenerator {
     WriterGenerator wg = new WriterGenerator();
     try {
       wg.generateWriter();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
   }
@@ -47,7 +35,7 @@ public class WriterGenerator {
 
     JCodeModel codeModel = new JCodeModel();
     JDefinedClass jDefinedClass = codeModel._class(getClassName());
-    jDefinedClass.javadoc().add("=== AUTO GENERATED ===");
+    jDefinedClass.javadoc().add("=== AUTO GENERATED ===\n");
     jDefinedClass.javadoc().add("Writer generated for class " + getClassName());
 
     JMethod writeMethod = jDefinedClass.method(PUBLIC, JsonObject.class, "write");

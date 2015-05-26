@@ -49,12 +49,14 @@ public class WriterGenerator {
   private void writeFields(JCodeModel codeModel, JMethod method, Field[] fields) throws ClassNotFoundException, JClassAlreadyExistsException {
     JBlock body = method.body();
     JClass classJson = codeModel.ref(Json.class);
+    JVar varObjectToSerialize = method.params().get(0);
+
     JVar varObjectBuilder = body.decl(codeModel._ref(JsonObjectBuilder.class), "objectBuilder", classJson.staticInvoke("createObjectBuilder"));
     for (Field field : fields) {
       JInvocation addInvocation = body.invoke(varObjectBuilder, "add");
       addInvocation.arg(field.getName());
-      JVar varObjectToSerialize = method.params().get(0);
       addInvocation.arg(varObjectToSerialize.ref(field.getName()));
+      addInvocation.invoke("toString").arg("null");
     }
     body._return(varObjectBuilder.invoke("build"));
   }
